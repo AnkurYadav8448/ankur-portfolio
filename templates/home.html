@@ -1132,7 +1132,7 @@
 
                                 <div
                                     class="skill-progress-bar"
-                                    style="width: {{ skill.level }}%;"
+                                    data-level="{{ skill.level }}"
                                 ></div>
 
                             </div>
@@ -1511,6 +1511,15 @@
 
             const menuToggle = document.getElementById("menuToggle");
             const mobileNav = document.getElementById("mobileNav");
+
+            document.querySelectorAll(".skill-progress-bar").forEach(function (bar) {
+                const level = Number(bar.dataset.level);
+
+                if (!Number.isNaN(level)) {
+                    const safeLevel = Math.min(100, Math.max(0, level));
+                    bar.style.width = safeLevel + "%";
+                }
+            });
 
             if (!menuToggle || !mobileNav) {
                 return;
