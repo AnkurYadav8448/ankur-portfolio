@@ -1,0 +1,1573 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="{% if profile and profile.short_intro %}{{ profile.short_intro }}{% else %}Ankur Yadav — Data Analytics and Python Developer Portfolio{% endif %}"
+    >
+
+    <meta
+        name="author"
+        content="{% if profile %}{{ profile.name }}{% else %}Ankur Yadav{% endif %}"
+    >
+
+    <title>
+        {% if profile %}
+            {{ profile.name }} | {{ profile.professional_title }}
+        {% else %}
+            Ankur Yadav | Data Analytics & Python Developer
+        {% endif %}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVIGATION
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="container navbar-inner">
+
+            <a
+                href="{% url 'home' %}"
+                class="logo"
+            >
+
+                {% if profile %}
+                    {{ profile.name|truncatechars:12 }}
+                {% else %}
+                    Ankur
+                {% endif %}
+
+                <span>.</span>
+
+            </a>
+
+
+            <nav aria-label="Main navigation">
+
+                <ul class="nav-links">
+
+                    <li>
+                        <a href="{% url 'home' %}">
+                            Home
+                        </a>
+                    </li>
+
+
+                    {% for page in navigation_pages %}
+
+                        <li>
+                            <a href="{% url 'page_detail' page.slug %}">
+                                {{ page.title }}
+                            </a>
+                        </li>
+
+                    {% endfor %}
+
+
+                    <li>
+                        <a href="#projects">
+                            Projects
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#experience">
+                            Experience
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#certificates">
+                            Certificates
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#skills">
+                            Skills
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#contact">
+                            Contact
+                        </a>
+                    </li>
+
+                </ul>
+
+            </nav>
+
+            <!-- Mobile menu button -->
+            <button
+                type="button"
+                class="menu-toggle"
+                id="menuToggle"
+                aria-label="Open navigation menu"
+                aria-expanded="false"
+                aria-controls="mobileNav"
+            >
+                <span aria-hidden="true"></span>
+            </button>
+
+            <!-- Mobile navigation -->
+            <div
+                class="mobile-nav"
+                id="mobileNav"
+            >
+                <ul>
+
+                    <li>
+                        <a href="{% url 'home' %}">
+                            Home
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#about">
+                            About Me
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#projects">
+                            Projects
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#experience">
+                            Experience
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#certificates">
+                            Certificates
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#skills">
+                            Skills
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#contact">
+                            Contact
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main>
+
+
+        <!-- =================================================
+             HERO
+        ================================================== -->
+
+        <section
+            id="home"
+            class="hero"
+        >
+
+            <div class="container hero-grid">
+
+
+                <div class="hero-content">
+
+                    <span class="hero-label">
+                        Data Analytics • Python • Web Development
+                    </span>
+
+
+                    <h1>
+
+                        Hi, I'm
+
+                        <span>
+
+                            {% if profile %}
+                                {{ profile.name }}
+                            {% else %}
+                                Ankur Yadav
+                            {% endif %}
+
+                        </span>
+
+                    </h1>
+
+
+                    <h2>
+
+                        {% if profile %}
+
+                            {{ profile.professional_title }}
+
+                        {% else %}
+
+                            Data Analytics &amp; Python Developer
+
+                        {% endif %}
+
+                    </h2>
+
+
+                    <p class="hero-text">
+
+                        {% if profile and profile.short_intro %}
+
+                            {{ profile.short_intro }}
+
+                        {% else %}
+
+                            I build data-driven solutions, dashboards,
+                            automation tools and practical web applications
+                            using Python, Django and modern technologies.
+
+                        {% endif %}
+
+                    </p>
+
+
+                    <div class="hero-buttons">
+
+                        <a
+                            href="{% url 'project_list' %}"
+                            class="btn btn-primary"
+                        >
+                            View My Projects
+                        </a>
+
+
+                        {% if profile and profile.resume %}
+
+                            <a
+                                href="{{ profile.resume.url }}"
+                                class="btn btn-secondary"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                View Resume
+                            </a>
+
+
+                            <a
+                                href="{{ profile.resume.url }}"
+                                class="btn btn-secondary"
+                                download
+                            >
+                                Download Resume
+                            </a>
+
+                        {% else %}
+
+                            <a
+                                href="#contact"
+                                class="btn btn-secondary"
+                            >
+                                Contact Me
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- PROFILE CARD -->
+
+                <div class="hero-card">
+
+                    <div class="profile-placeholder">
+
+                        {% if profile and profile.profile_photo %}
+
+                            <img
+                                src="{{ profile.profile_photo.url }}"
+                                alt="{{ profile.name }}"
+                                class="profile-photo"
+                            >
+
+                        {% endif %}
+
+
+                        <strong>
+
+                            {% if profile %}
+                                {{ profile.name }}
+                            {% else %}
+                                Ankur Yadav
+                            {% endif %}
+
+                        </strong>
+
+
+                        <p>
+
+                            {% if profile %}
+
+                                {{ profile.professional_title }}
+
+                            {% else %}
+
+                                Data Analytics &amp; Python Developer
+
+                            {% endif %}
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ABOUT
+        ================================================== -->
+
+        <section
+            id="about"
+            class="section"
+        >
+
+            <div class="container">
+
+
+                <div class="section-header">
+
+                    <span class="section-label">
+                        About Me
+                    </span>
+
+
+                    <h2 class="section-title">
+
+                        {% if profile and profile.short_intro %}
+
+                            {{ profile.short_intro }}
+
+                        {% else %}
+
+                            Building practical skills through real projects.
+
+                        {% endif %}
+
+                    </h2>
+
+
+                    <p class="section-description">
+
+                        {% if profile and profile.bio %}
+
+                            {{ profile.bio|truncatewords:45 }}
+
+                        {% else %}
+
+                            I am developing my career around data analytics,
+                            Python development, automation, dashboards and
+                            real-world digital solutions.
+
+                        {% endif %}
+
+                    </p>
+
+                </div>
+
+
+
+                <div class="info-grid">
+
+
+                    <div class="info-card">
+
+                        <h3>
+                            Data Analytics
+                        </h3>
+
+                        <p>
+
+                            {% if profile and profile.about_data_analytics %}
+
+                                {{ profile.about_data_analytics }}
+
+                            {% else %}
+
+                                Data cleaning, analysis, Excel, SQL,
+                                dashboards, reporting and visualization.
+
+                            {% endif %}
+
+                        </p>
+
+                    </div>
+
+
+
+                    <div class="info-card">
+
+                        <h3>
+                            Python Development
+                        </h3>
+
+                        <p>
+
+                            {% if profile and profile.about_python %}
+
+                                {{ profile.about_python }}
+
+                            {% else %}
+
+                                Python, Django, automation,
+                                database-driven applications
+                                and practical software solutions.
+
+                            {% endif %}
+
+                        </p>
+
+                    </div>
+
+
+
+                    <div class="info-card">
+
+                        <h3>
+                            Problem Solving
+                        </h3>
+
+                        <p>
+
+                            {% if profile and profile.about_problem_solving %}
+
+                                {{ profile.about_problem_solving }}
+
+                            {% else %}
+
+                                I focus on creating practical,
+                                useful solutions for real business
+                                and data problems.
+
+                            {% endif %}
+
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             EXPERIENCE
+        ================================================== -->
+
+        <section
+            id="experience"
+            class="section"
+        >
+
+            <div class="container">
+
+
+                <div class="section-header">
+
+                    <span class="section-label">
+                        Experience
+                    </span>
+
+
+                    <h2 class="section-title">
+                        My Experience
+                    </h2>
+
+
+                    <p class="section-description">
+                        Practical experience gained through projects,
+                        learning and real-world work.
+                    </p>
+
+                </div>
+
+
+
+                <div class="experience-list">
+
+
+                    {% for experience in experiences %}
+
+                        <article class="experience-card">
+
+
+                            <div class="experience-header">
+
+                                <div>
+
+                                    <span class="experience-type">
+                                        EXPERIENCE
+                                    </span>
+
+
+                                    <h3>
+                                        {{ experience.job_title }}
+                                    </h3>
+
+
+                                    <p class="experience-company">
+                                        {{ experience.company }}
+                                    </p>
+
+                                </div>
+
+
+                                <div class="experience-date">
+
+                                    {{ experience.start_date|date:"M Y" }}
+
+                                    –
+
+                                    {% if experience.currently_working %}
+
+                                        Present
+
+                                    {% elif experience.end_date %}
+
+                                        {{ experience.end_date|date:"M Y" }}
+
+                                    {% else %}
+
+                                        Present
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+
+
+                            {% if experience.location %}
+
+                                <p class="experience-location">
+                                    {{ experience.location }}
+                                </p>
+
+                            {% endif %}
+
+
+
+                            {% if experience.description %}
+
+                                <p class="experience-description">
+                                    {{ experience.description }}
+                                </p>
+
+                            {% endif %}
+
+
+
+                            {% if experience.responsibilities %}
+
+                                <div class="experience-responsibilities">
+
+                                    {{ experience.responsibilities|linebreaksbr }}
+
+                                </div>
+
+                            {% endif %}
+
+
+
+                            {% if experience.technologies %}
+
+                                <div class="experience-technologies">
+
+                                    <span>
+                                        {{ experience.technologies }}
+                                    </span>
+
+                                </div>
+
+                            {% endif %}
+
+
+                        </article>
+
+
+                    {% empty %}
+
+
+                        <div class="info-card">
+
+                            <h3>
+                                Experience coming soon
+                            </h3>
+
+                            <p>
+                                Add experience from the Django
+                                Admin Dashboard.
+                            </p>
+
+                        </div>
+
+
+                    {% endfor %}
+
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             CERTIFICATES
+        ================================================== -->
+
+        <section
+            id="certificates"
+            class="section"
+        >
+
+            <div class="container">
+
+
+                <div class="section-header">
+
+                    <span class="section-label">
+                        Certificates
+                    </span>
+
+
+                    <h2 class="section-title">
+                        Certifications &amp; Courses
+                    </h2>
+
+
+                    <p class="section-description">
+                        Courses and certifications that support my
+                        technical and professional development.
+                    </p>
+
+                </div>
+
+
+
+                <div class="certificates-list">
+
+
+                    {% for certificate in certificates %}
+
+
+                        <article class="certificate-card">
+
+
+                            <div class="certificate-content">
+
+
+                                <div class="certificate-main">
+
+
+                                    <span class="certificate-badge">
+                                        CERTIFICATE
+                                    </span>
+
+
+                                    <h3 class="certificate-title">
+                                        {{ certificate.title }}
+                                    </h3>
+
+
+                                    <p class="certificate-issuer">
+                                        {{ certificate.issuer }}
+                                    </p>
+
+
+                                    {% if certificate.issue_date %}
+
+                                        <p class="certificate-date">
+                                            Issued:
+                                            {{ certificate.issue_date|date:"d M Y" }}
+                                        </p>
+
+                                    {% endif %}
+
+
+                                    {% if certificate.description %}
+
+                                        <p class="certificate-description">
+                                            {{ certificate.description }}
+                                        </p>
+
+                                    {% endif %}
+
+
+                                </div>
+
+
+
+                                <div class="certificate-meta">
+
+
+                                    {% if certificate.credential_id %}
+
+                                        <div class="credential-box">
+
+                                            <span>
+                                                Credential ID
+                                            </span>
+
+                                            <strong>
+                                                {{ certificate.credential_id }}
+                                            </strong>
+
+                                        </div>
+
+                                    {% endif %}
+
+
+
+                                    <div class="certificate-actions">
+
+
+                                        {% if certificate.certificate_file %}
+
+                                            <a
+                                                href="{{ certificate.certificate_file.url }}"
+                                                class="btn btn-primary"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                View Certificate
+                                            </a>
+
+
+                                            <a
+                                                href="{{ certificate.certificate_file.url }}"
+                                                class="btn btn-secondary"
+                                                download
+                                            >
+                                                Download
+                                            </a>
+
+                                        {% endif %}
+
+
+
+                                        {% if certificate.credential_url %}
+
+                                            <a
+                                                href="{{ certificate.credential_url }}"
+                                                class="btn btn-secondary"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                Credential
+                                            </a>
+
+                                        {% endif %}
+
+
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+
+
+                        </article>
+
+
+                    {% empty %}
+
+
+                        <div class="info-card">
+
+                            <h3>
+                                Certificates coming soon
+                            </h3>
+
+                            <p>
+                                Add certificates from the Django
+                                Admin Dashboard.
+                            </p>
+
+                        </div>
+
+
+                    {% endfor %}
+
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             PROJECTS
+        ================================================== -->
+
+        <section
+            id="projects"
+            class="section"
+        >
+
+            <div class="container">
+
+
+                <div class="section-header">
+
+                    <span class="section-label">
+                        My Work
+                    </span>
+
+
+                    <h2 class="section-title">
+                        Featured Projects
+                    </h2>
+
+
+                    <p class="section-description">
+                        My latest projects are managed from the
+                        private Django Admin Dashboard.
+                    </p>
+
+                </div>
+
+
+
+                <div class="projects-grid">
+
+
+                    {% for project in featured_projects %}
+
+
+                        <article class="project-card">
+
+
+                            {% if project.image %}
+
+                                <a
+                                    href="{% url 'project_detail' project.slug %}"
+                                >
+
+                                    <img
+                                        src="{{ project.image.url }}"
+                                        alt="{{ project.title }}"
+                                        class="project-image"
+                                    >
+
+                                </a>
+
+                            {% else %}
+
+                                <a
+                                    href="{% url 'project_detail' project.slug %}"
+                                    aria-label="View {{ project.title }}"
+                                >
+
+                                    <div
+                                        class="project-image"
+                                        role="img"
+                                        aria-label="No project image available"
+                                    ></div>
+
+                                </a>
+
+                            {% endif %}
+
+
+
+                            <div class="project-content">
+
+
+                                <h3>
+                                    {{ project.title }}
+                                </h3>
+
+
+                                <p>
+                                    {{ project.short_description }}
+                                </p>
+
+
+                                {% if project.technologies %}
+
+                                    <div class="project-tech">
+                                        {{ project.technologies }}
+                                    </div>
+
+                                {% endif %}
+
+
+                                <div class="project-links">
+
+
+                                    <a
+                                        href="{% url 'project_detail' project.slug %}"
+                                    >
+                                        View Project →
+                                    </a>
+
+
+                                    {% if project.github_url %}
+
+                                        <a
+                                            href="{{ project.github_url }}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            GitHub →
+                                        </a>
+
+                                    {% endif %}
+
+
+                                    {% if project.live_url %}
+
+                                        <a
+                                            href="{{ project.live_url }}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Live Demo →
+                                        </a>
+
+                                    {% endif %}
+
+
+                                </div>
+
+
+                            </div>
+
+
+                        </article>
+
+
+                    {% empty %}
+
+
+                        <div class="info-card">
+
+                            <h3>
+                                Projects coming soon
+                            </h3>
+
+                            <p>
+                                Published projects added from the
+                                Django Admin Dashboard will appear here
+                                automatically.
+                            </p>
+
+                        </div>
+
+
+                    {% endfor %}
+
+
+                </div>
+
+
+
+                <div
+                    class="hero-buttons"
+                    style="margin-top: 35px;"
+                >
+
+                    <a
+                        href="{% url 'project_list' %}"
+                        class="btn btn-secondary"
+                    >
+                        View All Projects
+                    </a>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SKILLS
+        ================================================== -->
+
+        <section
+            id="skills"
+            class="section"
+        >
+
+            <div class="container">
+
+
+                <div class="section-header">
+
+                    <span class="section-label">
+                        Skills
+                    </span>
+
+
+                    <h2 class="section-title">
+                        Technologies &amp; Expertise
+                    </h2>
+
+
+                    <p class="section-description">
+                        Skills and technologies I use to build
+                        practical projects and solutions.
+                    </p>
+
+                </div>
+
+
+                <div class="skills-list">
+
+
+                    {% for skill in skills %}
+
+                        <article class="skill-card">
+
+
+                            <div class="skill-header">
+
+                                <div class="skill-title">
+
+                                    <h3>
+                                        {{ skill.name }}
+                                    </h3>
+
+
+                                    {% if skill.category %}
+
+                                        <span class="skill-category">
+                                            {{ skill.category }}
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <span class="skill-level-number">
+                                    {{ skill.level }}%
+                                </span>
+
+                            </div>
+
+
+                            <div
+                                class="skill-progress"
+                                role="progressbar"
+                                aria-label="{{ skill.name }} skill level"
+                                aria-valuemin="0"
+                                aria-valuemax="100"
+                                aria-valuenow="{{ skill.level }}"
+                            >
+
+                                <div
+                                    class="skill-progress-bar"
+                                    style="width: {{ skill.level }}%;"
+                                ></div>
+
+                            </div>
+
+
+                            {% if skill.description %}
+
+                                <p class="skill-description">
+                                    {{ skill.description }}
+                                </p>
+
+                            {% endif %}
+
+
+                        </article>
+
+
+                    {% empty %}
+
+                        <div class="projects-empty">
+
+                            <div class="projects-empty-icon">
+                                +
+                            </div>
+
+
+                            <h2>
+                                Skills coming soon
+                            </h2>
+
+
+                            <p>
+                                Add your skills from the Django
+                                Admin Dashboard.
+                            </p>
+
+                        </div>
+
+
+                    {% endfor %}
+
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CONTACT
+        ================================================== -->
+
+        <section
+            id="contact"
+            class="section"
+        >
+
+            <div class="container">
+
+
+                <div class="section-header">
+
+                    <span class="section-label">
+                        Contact
+                    </span>
+
+
+                    <h2 class="section-title">
+                        Let's connect.
+                    </h2>
+
+
+                    <p class="section-description">
+
+                        {% if profile and profile.email %}
+
+                            Interested in my work, a job opportunity,
+                            freelance work or collaboration?
+                            Feel free to reach out.
+
+                        {% else %}
+
+                            Interested in my work, a job opportunity,
+                            freelance work or collaboration?
+                            I'd be happy to connect.
+
+                        {% endif %}
+
+                    </p>
+
+                </div>
+
+
+                {% if messages %}
+
+                    <div class="contact-messages" aria-live="polite">
+
+                        {% for message in messages %}
+
+                            <div class="contact-message contact-message-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+
+                <div class="contact-grid">
+
+
+                    <div class="contact-form-card">
+
+                        <h3>
+                            Send Me a Message
+                        </h3>
+
+                        <p>
+                            Fill out the form below and your message
+                            will be saved securely in my portfolio inbox.
+                        </p>
+
+
+                        <form
+                            method="POST"
+                            action="{% url 'submit_contact' %}"
+                            class="contact-form"
+                        >
+
+                            {% csrf_token %}
+
+
+                            <div class="form-group">
+
+                                <label for="{{ contact_form.name.id_for_label }}">
+                                    Name
+                                </label>
+
+                                {{ contact_form.name }}
+
+                                {% if contact_form.name.errors %}
+
+                                    <div class="form-error">
+                                        {{ contact_form.name.errors|striptags }}
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="{{ contact_form.email.id_for_label }}">
+                                    Email
+                                </label>
+
+                                {{ contact_form.email }}
+
+                                {% if contact_form.email.errors %}
+
+                                    <div class="form-error">
+                                        {{ contact_form.email.errors|striptags }}
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="{{ contact_form.subject.id_for_label }}">
+                                    Subject
+                                </label>
+
+                                {{ contact_form.subject }}
+
+                                {% if contact_form.subject.errors %}
+
+                                    <div class="form-error">
+                                        {{ contact_form.subject.errors|striptags }}
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="{{ contact_form.message.id_for_label }}">
+                                    Message
+                                </label>
+
+                                {{ contact_form.message }}
+
+                                {% if contact_form.message.errors %}
+
+                                    <div class="form-error">
+                                        {{ contact_form.message.errors|striptags }}
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >
+                                Send Message
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                    <div class="contact-info-card">
+
+                        <h3>
+                            Contact Information
+                        </h3>
+
+
+                        {% if profile and profile.email %}
+
+                            <div class="contact-info-item">
+
+                                <span>
+                                    Email
+                                </span>
+
+                                <a href="mailto:{{ profile.email }}">
+                                    {{ profile.email }}
+                                </a>
+
+                            </div>
+
+                        {% endif %}
+
+
+                        {% if profile and profile.phone %}
+
+                            <div class="contact-info-item">
+
+                                <span>
+                                    Phone
+                                </span>
+
+                                <a href="tel:{{ profile.phone }}">
+                                    {{ profile.phone }}
+                                </a>
+
+                            </div>
+
+                        {% endif %}
+
+
+                        {% if profile and profile.location %}
+
+                            <div class="contact-info-item">
+
+                                <span>
+                                    Location
+                                </span>
+
+                                <p>
+                                    {{ profile.location }}
+                                </p>
+
+                            </div>
+
+                        {% endif %}
+
+
+                        <div class="hero-buttons contact-buttons">
+
+                            {% if profile and profile.linkedin_url %}
+
+                                <a
+                                    href="{{ profile.linkedin_url }}"
+                                    class="btn btn-secondary"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    LinkedIn
+                                </a>
+
+                            {% endif %}
+
+
+                            {% if profile and profile.github_url %}
+
+                                <a
+                                    href="{{ profile.github_url }}"
+                                    class="btn btn-secondary"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    GitHub
+                                </a>
+
+                            {% endif %}
+
+
+                            {% if profile and profile.instagram_url %}
+
+                                <a
+                                    href="{{ profile.instagram_url }}"
+                                    class="btn btn-secondary"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Instagram
+                                </a>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="container footer-inner">
+
+            <p>
+
+                © 2026
+
+                {% if profile %}
+                    {{ profile.name }}
+                {% else %}
+                    Ankur Yadav
+                {% endif %}
+
+                . All rights reserved.
+
+            </p>
+
+        </div>
+
+    </footer>
+
+
+<!-- =====================================================
+         MOBILE NAVIGATION SCRIPT
+    ====================================================== -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const menuToggle = document.getElementById("menuToggle");
+            const mobileNav = document.getElementById("mobileNav");
+
+            if (!menuToggle || !mobileNav) {
+                return;
+            }
+
+            function closeMenu() {
+                mobileNav.classList.remove("is-open");
+                menuToggle.setAttribute("aria-expanded", "false");
+                menuToggle.setAttribute("aria-label", "Open navigation menu");
+            }
+
+            function toggleMenu() {
+                const isOpen = mobileNav.classList.toggle("is-open");
+
+                menuToggle.setAttribute(
+                    "aria-expanded",
+                    String(isOpen)
+                );
+
+                menuToggle.setAttribute(
+                    "aria-label",
+                    isOpen
+                        ? "Close navigation menu"
+                        : "Open navigation menu"
+                );
+            }
+
+            menuToggle.addEventListener("click", toggleMenu);
+
+            mobileNav.querySelectorAll("a").forEach(function (link) {
+                link.addEventListener("click", closeMenu);
+            });
+
+            document.addEventListener("click", function (event) {
+                if (
+                    !mobileNav.contains(event.target) &&
+                    !menuToggle.contains(event.target)
+                ) {
+                    closeMenu();
+                }
+            });
+
+            window.addEventListener("resize", function () {
+                if (window.innerWidth > 650) {
+                    closeMenu();
+                }
+            });
+
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeMenu();
+                }
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>

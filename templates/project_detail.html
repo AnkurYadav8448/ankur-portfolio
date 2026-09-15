@@ -1,0 +1,394 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="{{ project.short_description }}"
+    >
+
+    <meta
+        name="author"
+        content="Ankur Yadav"
+    >
+
+    <title>
+        {{ project.title }} | Ankur Yadav
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVIGATION
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="container navbar-inner">
+
+
+            <a
+                href="{% url 'home' %}"
+                class="logo"
+            >
+                Ankur<span>.</span>
+            </a>
+
+
+            <nav aria-label="Main navigation">
+
+                <ul class="nav-links">
+
+
+                    <li>
+                        <a href="{% url 'home' %}">
+                            Home
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="{% url 'home' %}#about">
+                            About Me
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="{% url 'project_list' %}">
+                            Projects
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="{% url 'home' %}#experience">
+                            Experience
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="{% url 'home' %}#certificates">
+                            Certificates
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="{% url 'home' %}#skills">
+                            Skills
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="{% url 'home' %}#contact">
+                            Contact
+                        </a>
+                    </li>
+
+
+                </ul>
+
+            </nav>
+
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main>
+
+
+        <!-- =================================================
+             PROJECT HERO
+        ================================================== -->
+
+        <section class="section project-detail">
+
+            <div class="container">
+
+
+                <div class="section-header">
+
+
+                    <span class="section-label">
+                        Featured Project
+                    </span>
+
+
+                    <h1 class="section-title">
+                        {{ project.title }}
+                    </h1>
+
+
+                    <p class="section-description">
+                        {{ project.short_description }}
+                    </p>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     PROJECT IMAGE
+                ================================================== -->
+
+                {% if project.image %}
+
+                    <div class="project-detail-image-wrapper">
+
+                        <img
+                            src="{{ project.image.url }}"
+                            alt="{{ project.title }}"
+                            class="project-detail-image"
+                        >
+
+                    </div>
+
+                {% else %}
+
+                    <div class="project-detail-image-placeholder">
+
+                        <span>
+                            No project image available
+                        </span>
+
+                    </div>
+
+                {% endif %}
+
+
+
+                <!-- =================================================
+                     ABOUT PROJECT
+                ================================================== -->
+
+                <div class="project-about-card">
+
+
+                    <div class="project-about-header">
+
+                        <span class="section-label">
+                            Overview
+                        </span>
+
+
+                        <h2>
+                            About This Project
+                        </h2>
+
+                    </div>
+
+
+                    <div class="project-description">
+
+                        {{ project.description|linebreaks }}
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     PROJECT INFORMATION
+                ================================================== -->
+
+                <div class="project-detail-grid">
+
+
+                    <!-- TECHNOLOGIES -->
+
+                    <div class="project-detail-card">
+
+                        <span class="project-detail-label">
+                            Technologies
+                        </span>
+
+
+                        <h3>
+                            Tech Stack
+                        </h3>
+
+
+                        <p>
+                            {{ project.technologies }}
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- STATUS -->
+
+                    <div class="project-detail-card">
+
+                        <span class="project-detail-label">
+                            Status
+                        </span>
+
+
+                        <h3>
+                            Project Status
+                        </h3>
+
+
+                        <p>
+
+                            {% if project.published %}
+
+                                Published
+
+                            {% else %}
+
+                                Private
+
+                            {% endif %}
+
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- FEATURED -->
+
+                    <div class="project-detail-card">
+
+                        <span class="project-detail-label">
+                            Portfolio
+                        </span>
+
+
+                        <h3>
+                            Featured
+                        </h3>
+
+
+                        <p>
+
+                            {% if project.featured %}
+
+                                Featured Project
+
+                            {% else %}
+
+                                Portfolio Project
+
+                            {% endif %}
+
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     PROJECT ACTIONS
+                ================================================== -->
+
+                <div class="project-detail-actions">
+
+
+                    {% if project.github_url %}
+
+                        <a
+                            href="{{ project.github_url }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="btn btn-primary"
+                        >
+                            View on GitHub
+                        </a>
+
+                    {% endif %}
+
+
+
+                    {% if project.live_url %}
+
+                        <a
+                            href="{{ project.live_url }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="btn btn-secondary"
+                        >
+                            Open Live Demo
+                        </a>
+
+                    {% endif %}
+
+
+
+                    <a
+                        href="{% url 'project_list' %}"
+                        class="btn btn-secondary"
+                    >
+                        ← Back to Projects
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="container footer-inner">
+
+            <p>
+                © 2026 Ankur Yadav. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+</body>
+
+</html>
