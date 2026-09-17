@@ -116,7 +116,14 @@
 
 
                     <li>
-                        <a href="#contact">
+                        <a href="{% url 'resume' %}">
+                            Resume
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="{% url 'contact' %}">
                             Contact
                         </a>
                     </li>
@@ -181,7 +188,13 @@
                     </li>
 
                     <li>
-                        <a href="#contact">
+                        <a href="{% url 'resume' %}">
+                            Resume
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'contact' %}">
                             Contact
                         </a>
                     </li>
@@ -273,43 +286,22 @@
                     <div class="hero-buttons">
 
                         <a
-                            href="{% url 'project_list' %}"
+                            href="{% static 'resume/Ankur_Yadav_Resume.pdf' %}"
                             class="btn btn-primary"
+                            target="_blank"
+                            rel="noopener noreferrer"
                         >
-                            View My Projects
+                            View Resume
                         </a>
 
 
-                        {% if profile and profile.resume %}
-
-                            <a
-                                href="{{ profile.resume.url }}"
-                                class="btn btn-secondary"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                View Resume
-                            </a>
-
-
-                            <a
-                                href="{{ profile.resume.url }}"
-                                class="btn btn-secondary"
-                                download
-                            >
-                                Download Resume
-                            </a>
-
-                        {% else %}
-
-                            <a
-                                href="#contact"
-                                class="btn btn-secondary"
-                            >
-                                Contact Me
-                            </a>
-
-                        {% endif %}
+                        <a
+                            href="{% static 'resume/Ankur_Yadav_Resume.pdf' %}"
+                            class="btn btn-secondary"
+                            download="Ankur_Yadav_Resume.pdf"
+                        >
+                            Download Resume
+                        </a>
 
                     </div>
 
@@ -798,15 +790,6 @@
                                                 View Certificate
                                             </a>
 
-
-                                            <a
-                                                href="{{ certificate.certificate_file.url }}"
-                                                class="btn btn-secondary"
-                                                download
-                                            >
-                                                Download
-                                            </a>
-
                                         {% endif %}
 
 
@@ -908,36 +891,18 @@
                         <article class="project-card">
 
 
-                            {% if project.image %}
+                            <a
+                                href="{% url 'project_detail' project.id %}"
+                                aria-label="View {{ project.title }}"
+                            >
 
-                                <a
-                                    href="{% url 'project_detail' project.slug %}"
+                                <img
+                                    src="{% static 'images/smart-shop-preview.png' %}"
+                                    alt="{{ project.title }}"
+                                    class="project-image"
                                 >
 
-                                    <img
-                                        src="{{ project.image.url }}"
-                                        alt="{{ project.title }}"
-                                        class="project-image"
-                                    >
-
-                                </a>
-
-                            {% else %}
-
-                                <a
-                                    href="{% url 'project_detail' project.slug %}"
-                                    aria-label="View {{ project.title }}"
-                                >
-
-                                    <div
-                                        class="project-image"
-                                        role="img"
-                                        aria-label="No project image available"
-                                    ></div>
-
-                                </a>
-
-                            {% endif %}
+                            </a>
 
 
 
@@ -967,7 +932,7 @@
 
 
                                     <a
-                                        href="{% url 'project_detail' project.slug %}"
+                                        href="{% url 'project_detail' project.id %}"
                                     >
                                         View Project →
                                     </a>
@@ -1194,165 +1159,60 @@
 
             <div class="container">
 
-
                 <div class="section-header">
 
                     <span class="section-label">
                         Contact
                     </span>
 
-
                     <h2 class="section-title">
                         Let's connect.
                     </h2>
 
-
                     <p class="section-description">
-
-                        {% if profile and profile.email %}
-
-                            Interested in my work, a job opportunity,
-                            freelance work or collaboration?
-                            Feel free to reach out.
-
-                        {% else %}
-
-                            Interested in my work, a job opportunity,
-                            freelance work or collaboration?
-                            I'd be happy to connect.
-
-                        {% endif %}
-
+                        Interested in my work, a job opportunity,
+                        freelance work or collaboration?
+                        I'd be happy to connect.
                     </p>
 
                 </div>
 
 
-                {% if messages %}
-
-                    <div class="contact-messages" aria-live="polite">
-
-                        {% for message in messages %}
-
-                            <div class="contact-message contact-message-{{ message.tags }}">
-                                {{ message }}
-                            </div>
-
-                        {% endfor %}
-
-                    </div>
-
-                {% endif %}
-
-
                 <div class="contact-grid">
-
 
                     <div class="contact-form-card">
 
                         <h3>
-                            Send Me a Message
+                            Get In Touch
                         </h3>
 
                         <p>
-                            Fill out the form below and your message
-                            will be saved securely in my portfolio inbox.
+                            Have a project idea, internship opportunity,
+                            freelance requirement or simply want to connect?
+                            Send me a message through my dedicated contact page.
                         </p>
 
+                        <div class="hero-buttons contact-buttons">
 
-                        <form
-                            method="POST"
-                            action="{% url 'submit_contact' %}"
-                            class="contact-form"
-                        >
-
-                            {% csrf_token %}
-
-
-                            <div class="form-group">
-
-                                <label for="{{ contact_form.name.id_for_label }}">
-                                    Name
-                                </label>
-
-                                {{ contact_form.name }}
-
-                                {% if contact_form.name.errors %}
-
-                                    <div class="form-error">
-                                        {{ contact_form.name.errors|striptags }}
-                                    </div>
-
-                                {% endif %}
-
-                            </div>
-
-
-                            <div class="form-group">
-
-                                <label for="{{ contact_form.email.id_for_label }}">
-                                    Email
-                                </label>
-
-                                {{ contact_form.email }}
-
-                                {% if contact_form.email.errors %}
-
-                                    <div class="form-error">
-                                        {{ contact_form.email.errors|striptags }}
-                                    </div>
-
-                                {% endif %}
-
-                            </div>
-
-
-                            <div class="form-group">
-
-                                <label for="{{ contact_form.subject.id_for_label }}">
-                                    Subject
-                                </label>
-
-                                {{ contact_form.subject }}
-
-                                {% if contact_form.subject.errors %}
-
-                                    <div class="form-error">
-                                        {{ contact_form.subject.errors|striptags }}
-                                    </div>
-
-                                {% endif %}
-
-                            </div>
-
-
-                            <div class="form-group">
-
-                                <label for="{{ contact_form.message.id_for_label }}">
-                                    Message
-                                </label>
-
-                                {{ contact_form.message }}
-
-                                {% if contact_form.message.errors %}
-
-                                    <div class="form-error">
-                                        {{ contact_form.message.errors|striptags }}
-                                    </div>
-
-                                {% endif %}
-
-                            </div>
-
-
-                            <button
-                                type="submit"
+                            <a
+                                href="{% url 'contact' %}"
                                 class="btn btn-primary"
                             >
-                                Send Message
-                            </button>
+                                Open Contact Form →
+                            </a>
 
-                        </form>
+                            {% if profile and profile.email %}
+
+                                <a
+                                    href="mailto:{{ profile.email }}"
+                                    class="btn btn-secondary"
+                                >
+                                    Email Me
+                                </a>
+
+                            {% endif %}
+
+                        </div>
 
                     </div>
 
@@ -1412,6 +1272,20 @@
 
                             </div>
 
+                        {% else %}
+
+                            <div class="contact-info-item">
+
+                                <span>
+                                    Location
+                                </span>
+
+                                <p>
+                                    Jaipur, Rajasthan
+                                </p>
+
+                            </div>
+
                         {% endif %}
 
 
@@ -1462,9 +1336,7 @@
 
                     </div>
 
-
                 </div>
-
 
             </div>
 

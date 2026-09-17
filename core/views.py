@@ -1,36 +1,27 @@
 from django.shortcuts import render
 
+from firebase.services import (
+    get_projects,
+    get_skills,
+    get_profile,
+)
+
 from pages.models import Page
-from projects.models import Project
-from skills.models import Skill
-from userprofile.models import Profile
 from experience.models import Experience
 from certificates.models import Certificate
 
-from contact.forms import ContactMessageForm
-
 
 def home(request):
-    projects = Project.objects.filter(
-        published=True
-    ).order_by("-created_at")
+    # Firebase data
+    projects = get_projects()
+    skills = get_skills()
+    profile = get_profile()
 
-    featured_projects = projects.filter(
-        featured=True
-    )[:3]
-
+    # Keep these Django sections working for now
     navigation_pages = Page.objects.filter(
         published=True,
         show_in_navigation=True,
     ).order_by("title")
-
-    skills = Skill.objects.filter(
-        published=True
-    ).order_by("display_order", "name")
-
-    profile = Profile.objects.filter(
-        website_status=True
-    ).first()
 
     experiences = Experience.objects.filter(
         published=True
@@ -40,17 +31,25 @@ def home(request):
         published=True
     ).order_by("display_order", "-issue_date")
 
-    contact_form = ContactMessageForm()
+    # Firebase projects marked featured
+    featured_projects = [
+        project
+        for project in projects
+        if project.get("featured") is True
+    ][:3]
 
     context = {
         "projects": projects,
         "featured_projects": featured_projects,
-        "navigation_pages": navigation_pages,
         "skills": skills,
         "profile": profile,
+        "navigation_pages": navigation_pages,
         "experiences": experiences,
         "certificates": certificates,
-        "contact_form": contact_form,
     }
 
-    return render(request, "home.html", context)
+    return render(
+        request,
+        "home.html",
+        context,
+    )

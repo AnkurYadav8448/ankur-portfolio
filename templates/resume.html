@@ -1,0 +1,121 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Resume | Ankur Yadav</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0b1020;
+            color: #ffffff;
+        }
+
+        .resume-page {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .resume-page h1 {
+            margin: 0 0 30px;
+            font-size: 56px;
+            font-weight: 800;
+        }
+
+        .resume-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .resume-button {
+            display: inline-block;
+            padding: 14px 26px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 700;
+            background: #417690;
+            color: #ffffff;
+            transition: 0.2s ease;
+        }
+
+        .resume-button:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        @media (max-width: 600px) {
+            .resume-page h1 {
+                font-size: 42px;
+            }
+
+            .resume-button {
+                width: 100%;
+                max-width: 220px;
+            }
+
+            .resume-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="resume-page">
+
+        <h1>
+            Resume
+        </h1>
+
+        <div class="resume-buttons">
+
+            <a
+                href="{% static 'resume/Ankur_Yadav_Resume.pdf' %}"
+                target="_blank"
+                rel="noopener"
+                class="resume-button"
+            >
+                View Resume
+            </a>
+
+            <a
+                href="{% static 'resume/Ankur_Yadav_Resume.pdf' %}"
+                download="Ankur_Yadav_Resume.pdf"
+                class="resume-button"
+            >
+                Download Resume
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

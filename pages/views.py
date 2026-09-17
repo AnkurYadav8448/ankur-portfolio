@@ -17,3 +17,10 @@ def page_detail(request, slug):
             "page": page,
         },
     )
+
+
+def resume(request):
+    return render(
+        request,
+        "resume.html",
+    )

@@ -30,4 +30,6 @@ Thumbs.db
 
 # Python tooling
 .pytest_cache/
-.mypy_cache/
+.mypy_cache/firebase/serviceAccountKey.json
+firebase/serviceAccountKey.json
+firebase/serviceAccountKey.json
