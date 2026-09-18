@@ -19,10 +19,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv(
     "SECRET_KEY",
-    "django-insecure-change-this-in-production",
+    "django-insecure-development-only-key",
 )
 
-DEBUG = os.getenv("DEBUG", "True").lower() == "true"
+DEBUG = (
+    os.getenv("DEBUG", "True").lower() == "true"
+)
 
 
 # =========================================================
@@ -33,20 +35,12 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "[::1]",
-    "ankur-portfolio-jxz0.onrender.com",
+    ".vercel.app",
 ]
-
-render_hostname = os.getenv(
-    "RENDER_EXTERNAL_HOSTNAME",
-    ""
-).strip()
-
-if render_hostname and render_hostname not in ALLOWED_HOSTS:
-    ALLOWED_HOSTS.append(render_hostname)
 
 configured_hosts = os.getenv(
     "ALLOWED_HOSTS",
-    ""
+    "",
 ).strip()
 
 if configured_hosts:
@@ -62,14 +56,21 @@ if configured_hosts:
 # =========================================================
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://ankur-portfolio-jxz0.onrender.com",
+    "https://*.vercel.app",
 ]
 
-if render_hostname:
-    render_origin = f"https://{render_hostname}"
+configured_origins = os.getenv(
+    "CSRF_TRUSTED_ORIGINS",
+    "",
+).strip()
 
-    if render_origin not in CSRF_TRUSTED_ORIGINS:
-        CSRF_TRUSTED_ORIGINS.append(render_origin)
+if configured_origins:
+    for origin in configured_origins.split(","):
+        origin = origin.strip()
+
+        if origin and origin not in CSRF_TRUSTED_ORIGINS:
+            CSRF_TRUSTED_ORIGINS.append(origin)
+
 
 SECURE_PROXY_SSL_HEADER = (
     "HTTP_X_FORWARDED_PROTO",
@@ -160,12 +161,6 @@ ASGI_APPLICATION = "portfolio.asgi.application"
 # =========================================================
 # DATABASE
 # =========================================================
-#
-# SQLite is kept for Django's built-in system:
-# admin, authentication, sessions, etc.
-#
-# Portfolio data will be moved to Firebase Firestore.
-#
 
 DATABASES = {
     "default": {
@@ -224,7 +219,7 @@ USE_TZ = True
 # STATIC FILES
 # =========================================================
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
@@ -232,10 +227,12 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+
 STORAGES = {
     "default": {
         "BACKEND": (
-            "django.core.files.storage.FileSystemStorage"
+            "django.core.files.storage."
+            "FileSystemStorage"
         ),
     },
     "staticfiles": {
@@ -251,7 +248,7 @@ STORAGES = {
 # MEDIA FILES
 # =========================================================
 
-MEDIA_URL = "media/"
+MEDIA_URL = "/media/"
 
 MEDIA_ROOT = BASE_DIR / "media"
 
