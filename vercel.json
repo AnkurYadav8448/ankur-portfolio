@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "python manage.py migrate --noinput",
+  "functions": {
+    "portfolio/wsgi.py": {
+      "maxDuration": 30
+    }
+  }
+}

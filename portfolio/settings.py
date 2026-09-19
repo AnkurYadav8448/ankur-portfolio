@@ -3,6 +3,7 @@ Django settings for portfolio project.
 """
 
 import os
+import urllib.parse
 from pathlib import Path
 
 
@@ -23,7 +24,7 @@ SECRET_KEY = os.getenv(
 )
 
 DEBUG = (
-    os.getenv("DEBUG", "True").lower() == "true"
+    os.getenv("DEBUG", "False").lower() == "true"
 )
 
 
@@ -162,12 +163,29 @@ ASGI_APPLICATION = "portfolio.asgi.application"
 # DATABASE
 # =========================================================
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+if os.environ.get("DATABASE_URL"):
+    # Production: Postgres (Neon, Supabase, Vercel Postgres, etc.)
+    db_url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
+
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": db_url.path.lstrip("/"),
+            "USER": db_url.username,
+            "PASSWORD": db_url.password,
+            "HOST": db_url.hostname,
+            "PORT": db_url.port,
+            "OPTIONS": {"sslmode": "require"},
+        }
     }
-}
+else:
+    # Local development fallback
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 
 # =========================================================
@@ -228,20 +246,39 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
-STORAGES = {
-    "default": {
-        "BACKEND": (
-            "django.core.files.storage."
-            "FileSystemStorage"
-        ),
-    },
-    "staticfiles": {
-        "BACKEND": (
-            "whitenoise.storage."
-            "CompressedManifestStaticFilesStorage"
-        ),
-    },
-}
+GS_BUCKET_NAME = os.getenv("GS_BUCKET_NAME", "").strip()
+
+if GS_BUCKET_NAME:
+    # Production: uploads (resume, certificates, project images) go to
+    # Google Cloud Storage / Firebase Storage instead of local disk,
+    # since Vercel's filesystem is read-only and wiped on every request.
+    STORAGES = {
+        "default": {
+            "BACKEND": "storage.gcs_storage.MediaGCStorage",
+        },
+        "staticfiles": {
+            "BACKEND": (
+                "whitenoise.storage."
+                "CompressedManifestStaticFilesStorage"
+            ),
+        },
+    }
+else:
+    # Local development fallback
+    STORAGES = {
+        "default": {
+            "BACKEND": (
+                "django.core.files.storage."
+                "FileSystemStorage"
+            ),
+        },
+        "staticfiles": {
+            "BACKEND": (
+                "whitenoise.storage."
+                "CompressedManifestStaticFilesStorage"
+            ),
+        },
+    }
 
 
 # =========================================================

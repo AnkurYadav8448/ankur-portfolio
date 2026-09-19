@@ -2,6 +2,8 @@ asgiref==3.12.1
 Django==6.1.1
 gunicorn==26.2.0
 google-auth
+google-cloud-storage
+psycopg[binary]
 requests
 pillow==12.3.0
 sqlparse==0.6.0
