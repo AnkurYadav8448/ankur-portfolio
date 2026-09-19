@@ -1,7 +1,7 @@
 import base64
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from google.auth.transport.requests import AuthorizedSession
@@ -26,24 +26,57 @@ SCOPES = [
 
 
 def get_credentials():
+    """
+    Load Firebase service-account credentials.
+
+    On Vercel:
+        FIREBASE_SERVICE_ACCOUNT_B64
+
+    Locally:
+        firebase/serviceAccountKey.json
+    """
+
     firebase_json_b64 = os.getenv(
-        "FIREBASE_SERVICE_ACCOUNT_B64"
-    )
+        "FIREBASE_SERVICE_ACCOUNT_B64",
+        "",
+    ).strip()
 
     if firebase_json_b64:
-        service_account_json = base64.b64decode(
-            firebase_json_b64
-        ).decode("utf-8")
+        try:
+            # Remove accidental spaces/new lines
+            firebase_json_b64 = "".join(
+                firebase_json_b64.split()
+            )
 
-        service_account_info = json.loads(
-            service_account_json
-        )
+            # Add missing Base64 padding if necessary
+            firebase_json_b64 += "=" * (
+                (-len(firebase_json_b64)) % 4
+            )
 
-        return service_account.Credentials.from_service_account_info(
-            service_account_info,
-            scopes=SCOPES,
-        )
+            service_account_json = base64.b64decode(
+                firebase_json_b64
+            ).decode("utf-8")
 
+            service_account_info = json.loads(
+                service_account_json
+            )
+
+            return (
+                service_account.Credentials
+                .from_service_account_info(
+                    service_account_info,
+                    scopes=SCOPES,
+                )
+            )
+
+        except Exception as exc:
+            raise ValueError(
+                "FIREBASE_SERVICE_ACCOUNT_B64 is invalid. "
+                "Make sure Vercel contains the complete Base64 "
+                "value generated from serviceAccountKey.json."
+            ) from exc
+
+    # Local development fallback
     service_account_file = (
         BASE_DIR
         / "firebase"
@@ -54,19 +87,23 @@ def get_credentials():
         raise FileNotFoundError(
             "Firebase credentials not found. "
             "Set FIREBASE_SERVICE_ACCOUNT_B64 "
-            "or place serviceAccountKey.json in "
-            "firebase/."
+            "in Vercel or place serviceAccountKey.json "
+            "inside firebase/."
         )
 
-    return service_account.Credentials.from_service_account_file(
-        str(service_account_file),
-        scopes=SCOPES,
+    return (
+        service_account.Credentials
+        .from_service_account_file(
+            str(service_account_file),
+            scopes=SCOPES,
+        )
     )
 
 
 def get_session():
-    credentials = get_credentials()
-    return AuthorizedSession(credentials)
+    return AuthorizedSession(
+        get_credentials()
+    )
 
 
 BASE_URL = (
@@ -150,24 +187,43 @@ def _decode_fields(fields):
 
 def _encode_value(value):
     if value is None:
-        return {"nullValue": None}
+        return {
+            "nullValue": None
+        }
 
     if isinstance(value, bool):
-        return {"booleanValue": value}
+        return {
+            "booleanValue": value
+        }
 
     if isinstance(value, int):
-        return {"integerValue": str(value)}
+        return {
+            "integerValue": str(value)
+        }
 
     if isinstance(value, float):
-        return {"doubleValue": value}
+        return {
+            "doubleValue": value
+        }
 
     if isinstance(value, datetime):
+        if value.tzinfo is None:
+            value = value.replace(
+                tzinfo=timezone.utc
+            )
+
         return {
-            "timestampValue": value.astimezone().isoformat()
+            "timestampValue": (
+                value.astimezone(timezone.utc)
+                .isoformat()
+                .replace("+00:00", "Z")
+            )
         }
 
     if isinstance(value, str):
-        return {"stringValue": value}
+        return {
+            "stringValue": value
+        }
 
     if isinstance(value, list):
         return {
@@ -218,11 +274,11 @@ def list_documents(collection_name):
 
         for document in response.get(
             "documents",
-            [],
+            []
         ):
             name = document.get(
                 "name",
-                "",
+                ""
             )
 
             document_id = name.split("/")[-1]
@@ -232,7 +288,7 @@ def list_documents(collection_name):
                 "data": _decode_fields(
                     document.get(
                         "fields",
-                        {},
+                        {}
                     )
                 ),
             })
@@ -261,7 +317,7 @@ def get_document(
         "data": _decode_fields(
             response.get(
                 "fields",
-                {},
+                {}
             )
         ),
     }
@@ -281,7 +337,7 @@ def create_document(
 
     name = response.get(
         "name",
-        "",
+        ""
     )
 
     return name.split("/")[-1]
