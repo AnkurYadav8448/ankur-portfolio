@@ -1,15 +1,12 @@
 import base64
+import json
 import os
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
 from google.auth.transport.requests import AuthorizedSession
 from google.oauth2 import service_account
 
-
-# ==========================================================
-# PROJECT SETTINGS
-# ==========================================================
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -28,24 +25,15 @@ SCOPES = [
 ]
 
 
-# ==========================================================
-# FIREBASE CREDENTIALS
-# ==========================================================
-
 def get_credentials():
     firebase_json_b64 = os.getenv(
         "FIREBASE_SERVICE_ACCOUNT_B64"
     )
 
-    # Production:
-    # Railway will provide the service-account JSON
-    # as a Base64 environment variable.
     if firebase_json_b64:
         service_account_json = base64.b64decode(
             firebase_json_b64
         ).decode("utf-8")
-
-        import json
 
         service_account_info = json.loads(
             service_account_json
@@ -56,9 +44,6 @@ def get_credentials():
             scopes=SCOPES,
         )
 
-    # Local development:
-    # Use the local JSON file when the environment variable
-    # is not available.
     service_account_file = (
         BASE_DIR
         / "firebase"
@@ -79,14 +64,10 @@ def get_credentials():
     )
 
 
-credentials = get_credentials()
+def get_session():
+    credentials = get_credentials()
+    return AuthorizedSession(credentials)
 
-session = AuthorizedSession(credentials)
-
-
-# ==========================================================
-# FIRESTORE REST API
-# ==========================================================
 
 BASE_URL = (
     "https://firestore.googleapis.com/v1/"
@@ -96,11 +77,9 @@ BASE_URL = (
 )
 
 
-def _request(
-    method,
-    path="",
-    **kwargs,
-):
+def _request(method, path="", **kwargs):
+    session = get_session()
+
     url = f"{BASE_URL}{path}"
 
     response = session.request(
@@ -117,10 +96,6 @@ def _request(
 
     return {}
 
-
-# ==========================================================
-# FIRESTORE DECODING
-# ==========================================================
 
 def _decode_value(value):
     if "nullValue" in value:
@@ -173,42 +148,26 @@ def _decode_fields(fields):
     }
 
 
-# ==========================================================
-# FIRESTORE ENCODING
-# ==========================================================
-
 def _encode_value(value):
     if value is None:
-        return {
-            "nullValue": None,
-        }
+        return {"nullValue": None}
 
     if isinstance(value, bool):
-        return {
-            "booleanValue": value,
-        }
+        return {"booleanValue": value}
 
     if isinstance(value, int):
-        return {
-            "integerValue": str(value),
-        }
+        return {"integerValue": str(value)}
 
     if isinstance(value, float):
-        return {
-            "doubleValue": value,
-        }
+        return {"doubleValue": value}
 
     if isinstance(value, datetime):
         return {
-            "timestampValue": (
-                value.astimezone().isoformat()
-            ),
+            "timestampValue": value.astimezone().isoformat()
         }
 
     if isinstance(value, str):
-        return {
-            "stringValue": value,
-        }
+        return {"stringValue": value}
 
     if isinstance(value, list):
         return {
@@ -216,15 +175,15 @@ def _encode_value(value):
                 "values": [
                     _encode_value(item)
                     for item in value
-                ],
-            },
+                ]
+            }
         }
 
     if isinstance(value, dict):
         return {
             "mapValue": {
-                "fields": _encode_fields(value),
-            },
+                "fields": _encode_fields(value)
+            }
         }
 
     raise TypeError(
@@ -239,17 +198,13 @@ def _encode_fields(data):
     }
 
 
-# ==========================================================
-# FIRESTORE DOCUMENT FUNCTIONS
-# ==========================================================
-
 def list_documents(collection_name):
     documents = []
     page_token = None
 
     while True:
         params = {
-            "pageSize": 300,
+            "pageSize": 300
         }
 
         if page_token:
@@ -320,7 +275,7 @@ def create_document(
         "POST",
         f"/{collection_name}",
         json={
-            "fields": _encode_fields(data),
+            "fields": _encode_fields(data)
         },
     )
 
@@ -341,7 +296,7 @@ def update_document(
         "PATCH",
         f"/{collection_name}/{document_id}",
         json={
-            "fields": _encode_fields(data),
+            "fields": _encode_fields(data)
         },
     )
 
