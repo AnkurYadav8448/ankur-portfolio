@@ -1,4 +1,4 @@
-{% load static %}
+﻿{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +14,7 @@
 
     <meta
         name="description"
-        content="{% if profile and profile.short_intro %}{{ profile.short_intro }}{% else %}Ankur Yadav — Data Analytics and Python Developer Portfolio{% endif %}"
+        content="{% if profile and profile.short_intro %}{{ profile.short_intro }}{% else %}Ankur Yadav â€” Data Analytics and Python Developer Portfolio{% endif %}"
     >
 
     <meta
@@ -230,7 +230,7 @@
                 <div class="hero-content">
 
                     <span class="hero-label">
-                        Data Analytics • Python • Web Development
+                        Data Analytics â€¢ Python â€¢ Web Development
                     </span>
 
 
@@ -570,7 +570,7 @@
 
                                     {{ experience.start_date|date:"M Y" }}
 
-                                    –
+                                    â€“
 
                                     {% if experience.currently_working %}
 
@@ -897,7 +897,7 @@
                             >
 
                                 <img
-                                    src="{% static 'images/smart-shop-preview.png' %}"
+                                    src="{% static 'images/Screenshot 2026-09-17 111120.png' %}"
                                     alt="{{ project.title }}"
                                     class="project-image"
                                 >
@@ -934,7 +934,7 @@
                                     <a
                                         href="{% url 'project_detail' project.id %}"
                                     >
-                                        View Project →
+                                        View Project â†’
                                     </a>
 
 
@@ -945,7 +945,7 @@
                                             target="_blank"
                                             rel="noopener noreferrer"
                                         >
-                                            GitHub →
+                                            GitHub â†’
                                         </a>
 
                                     {% endif %}
@@ -958,7 +958,7 @@
                                             target="_blank"
                                             rel="noopener noreferrer"
                                         >
-                                            Live Demo →
+                                            Live Demo â†’
                                         </a>
 
                                     {% endif %}
@@ -1198,7 +1198,7 @@
                                 href="{% url 'contact' %}"
                                 class="btn btn-primary"
                             >
-                                Open Contact Form →
+                                Open Contact Form â†’
                             </a>
 
                             {% if profile and profile.email %}
@@ -1357,7 +1357,7 @@
 
             <p>
 
-                © 2026
+                Â© 2026
 
                 {% if profile %}
                     {{ profile.name }}
