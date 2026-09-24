@@ -1,0 +1,75 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}
+Firebase Messages
+{% endblock %}
+
+{% block content %}
+
+<h1>Firebase Messages</h1>
+
+<p>
+    Messages submitted through your portfolio contact form.
+</p>
+
+{% if messages_data %}
+
+    <table style="
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 25px;
+    ">
+
+        <thead>
+            <tr>
+                <th style="padding: 12px; text-align: left;">Name</th>
+                <th style="padding: 12px; text-align: left;">Email</th>
+                <th style="padding: 12px; text-align: left;">Subject</th>
+                <th style="padding: 12px; text-align: left;">Message</th>
+                <th style="padding: 12px; text-align: left;">Created</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for item in messages_data %}
+
+                <tr>
+
+                    <td style="padding: 12px;">
+                        {{ item.name|default:"-" }}
+                    </td>
+
+                    <td style="padding: 12px;">
+                        {{ item.email|default:"-" }}
+                    </td>
+
+                    <td style="padding: 12px;">
+                        {{ item.subject|default:"-" }}
+                    </td>
+
+                    <td style="padding: 12px;">
+                        {{ item.message|default:"-" }}
+                    </td>
+
+                    <td style="padding: 12px;">
+                        {{ item.created_at|default:"-" }}
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+{% else %}
+
+    <p style="margin-top: 25px;">
+        No Firebase messages found.
+    </p>
+
+{% endif %}
+
+{% endblock %}

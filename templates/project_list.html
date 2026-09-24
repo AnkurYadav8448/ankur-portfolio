@@ -1,0 +1,327 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Ankur Yadav's projects, applications, dashboards and data-driven solutions."
+    >
+
+    <meta
+        name="author"
+        content="Ankur Yadav"
+    >
+
+    <title>Projects | Ankur Yadav</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVIGATION
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="container navbar-inner">
+
+            <a
+                href="{% url 'home' %}"
+                class="logo"
+            >
+                Ankur<span>.</span>
+            </a>
+
+
+            <nav aria-label="Main navigation">
+
+                <ul class="nav-links">
+
+                    <li>
+                        <a href="{% url 'home' %}">
+                            Home
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'home' %}#about">
+                            About Me
+                        </a>
+                    </li>
+
+                    <li>
+                        <a
+                            href="{% url 'project_list' %}"
+                            aria-current="page"
+                        >
+                            Projects
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'home' %}#experience">
+                            Experience
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'home' %}#certificates">
+                            Certificates
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'home' %}#skills">
+                            Skills
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'home' %}#contact">
+                            Contact
+                        </a>
+                    </li>
+
+                </ul>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main>
+
+        <section class="section project-list-page">
+
+            <div class="container">
+
+
+                <!-- =================================================
+                     PAGE HEADER
+                ================================================== -->
+
+                <div class="section-header">
+
+                    <span class="section-label">
+                        Portfolio
+                    </span>
+
+                    <h1 class="section-title">
+                        My Projects
+                    </h1>
+
+                    <p class="section-description">
+                        Explore my projects, applications,
+                        dashboards and data-driven solutions.
+                    </p>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     PROJECT GRID
+                ================================================== -->
+
+                {% if projects %}
+
+                    <div class="projects-grid">
+
+                        {% for project in projects %}
+
+                            <article class="project-card">
+
+
+                                <!-- PROJECT IMAGE -->
+
+                                {% if project.image %}
+
+                                    <a
+                                        href="{% url 'project_detail' project.slug %}"
+                                        class="project-image-link"
+                                        aria-label="View {{ project.title }}"
+                                    >
+
+                                        <img
+                                            src="{{ project.image.url }}"
+                                            alt="{{ project.title }}"
+                                            class="project-image"
+                                            loading="lazy"
+                                        >
+
+                                    </a>
+
+                                {% else %}
+
+                                    <a
+                                        href="{% url 'project_detail' project.slug %}"
+                                        class="project-image-link"
+                                        aria-label="View {{ project.title }}"
+                                    >
+
+                                        <div
+                                            class="project-image project-image-placeholder"
+                                            aria-hidden="true"
+                                        ></div>
+
+                                    </a>
+
+                                {% endif %}
+
+
+
+                                <!-- PROJECT CONTENT -->
+
+                                <div class="project-content">
+
+
+                                    <div class="project-title-row">
+
+                                        <h2>
+                                            {{ project.title }}
+                                        </h2>
+
+
+                                        {% if project.featured %}
+
+                                            <span class="project-badge">
+                                                Featured
+                                            </span>
+
+                                        {% endif %}
+
+                                    </div>
+
+
+
+                                    <!-- DESCRIPTION -->
+
+                                    {% if project.short_description %}
+
+                                        <p>
+                                            {{ project.short_description }}
+                                        </p>
+
+                                    {% endif %}
+
+
+
+                                    <!-- TECHNOLOGIES -->
+
+                                    {% if project.technologies %}
+
+                                        <div class="project-tech">
+                                            {{ project.technologies }}
+                                        </div>
+
+                                    {% endif %}
+
+
+
+                                    <!-- PROJECT LINKS -->
+
+                                    <div class="project-links">
+
+                                        <a
+                                            href="{% url 'project_detail' project.slug %}"
+                                            class="project-link-primary"
+                                        >
+                                            View Project →
+                                        </a>
+
+
+                                        {% if project.github_url %}
+
+                                            <a
+                                                href="{{ project.github_url }}"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                GitHub →
+                                            </a>
+
+                                        {% endif %}
+
+
+                                        {% if project.live_url %}
+
+                                            <a
+                                                href="{{ project.live_url }}"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                Live Demo →
+                                            </a>
+
+                                        {% endif %}
+
+                                    </div>
+
+
+                                </div>
+
+                            </article>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="container footer-inner">
+
+            <p>
+                © 2026 Ankur Yadav. All rights reserved.
+            </p>
+
+            <p>
+                Built with Python &amp; Django.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+</body>
+
+</html>

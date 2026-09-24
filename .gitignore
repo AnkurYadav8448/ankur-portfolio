@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Django
+db.sqlite3
+db.sqlite3-journal
+staticfiles/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Firebase / Google credentials
+firebase/serviceAccountKey.json
+**/serviceAccountKey.json
+*.json.key
+
+# Google Cloud credentials
+*service-account*.json
+*service_account*.json
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Python cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
